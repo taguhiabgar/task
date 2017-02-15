@@ -9,6 +9,10 @@
 import Foundation
 import Alamofire
 
+protocol DataManagerDelegate {
+    func updateData()
+}
+
 class DataManager {
     
     // MARK: - Static Properties
@@ -19,6 +23,8 @@ class DataManager {
     
     public var data: Array<Dictionary<String, Any>> = []
     
+    public var delegate: DataManagerDelegate? = nil
+    
     // MARK: - Public Methods
     
     public func requestData(url: String) {
@@ -27,6 +33,7 @@ class DataManager {
             jsonArray = self.convertToDictionary(response: responseObject)
             } .responseJSON(completionHandler: { _ in
                 self.data = jsonArray
+                self.delegate?.updateData()
             }
         )
     }

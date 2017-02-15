@@ -8,24 +8,23 @@
 
 import UIKit
 
-let urlString = "https://jsonplaceholder.typicode.com/photos?albumId[]=95&albumId[]=1"
 
 class ViewController: UIViewController {
     
-    var tableView = UITableView()
-    
-    var tableViewData = ["item 1", "item 2", "item 3"]
-    
-    let cellReuseIdentifier = "cell"
+    fileprivate var tableView = UITableView()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.backgroundColor = UIColor.gray
-        requestData()
     }
+}
+
+extension ViewController: DataManagerDelegate {
     
-    private func requestData() {
-        DataManager.shared.requestData(url: urlString)
+    func updateData() {
+        setupTableView()
+        self.tableView.reloadData()
+        print(DataManager.shared.data)
     }
 }
 
@@ -33,6 +32,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        DataManager.shared.delegate = self
+        setupTableView()
+    }
+    
+    fileprivate func setupTableView() {
         tableView.frame = self.view.frame
         tableView.delegate = self
         tableView.dataSource = self
@@ -40,15 +44,20 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         self.view.addSubview(tableView)
     }
     
+    // MARK: - Table View Data Source
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tableViewData.count
+        return DataManager.shared.data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)! as UITableViewCell
-        cell.textLabel?.text = self.tableViewData[indexPath.row]
+        let image = UIImage() // --> CHANGE
+        let title = DataManager.shared.data[indexPath.row]["title"]
+        let cell: TableViewCell = TableViewCell(image: image, title: title as! String)
         return cell
     }
+    
+    // MARK: - Table View Delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("--> #\(indexPath.row)")
