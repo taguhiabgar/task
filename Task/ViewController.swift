@@ -8,6 +8,7 @@
 
 import UIKit
 
+let placeholderImage = UIImage(named: "placeholder")
 
 class ViewController: UIViewController {
     
@@ -15,16 +16,17 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        view.backgroundColor = UIColor.gray
+        self.navigationController?.navigationBar.barStyle = .default
     }
 }
 
 extension ViewController: DataManagerDelegate {
     
     func updateData() {
-        setupTableView()
-        self.tableView.reloadData()
-        print(DataManager.shared.data)
+        DispatchQueue.main.async(execute: {
+            self.tableView.reloadData()
+            return
+        })
     }
 }
 
@@ -51,18 +53,17 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let image = UIImage() // --> CHANGE
-        let title = DataManager.shared.data[indexPath.row]["title"]
-        let cell: TableViewCell = TableViewCell(image: image, title: title as! String)
-        return cell
+//        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
+        let album = DataManager.shared.data[indexPath.row]
+        return TableViewCell(album: album)
     }
     
     // MARK: - Table View Delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("--> #\(indexPath.row)")
         let vc = DetailedViewController()
+        // pass data to detailed view controller
+        vc.data = DataManager.shared.data[indexPath.row]
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
 }

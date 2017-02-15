@@ -6,7 +6,7 @@
 //  Copyright © 2017 Taguhi Abgaryan. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Alamofire
 
 protocol DataManagerDelegate {
@@ -21,14 +21,13 @@ class DataManager {
     
     // MARK: - Public Properties
     
-    public var data: Array<Dictionary<String, Any>> = []
-    
+    public var data: Array<Album> = []
     public var delegate: DataManagerDelegate? = nil
     
     // MARK: - Public Methods
     
     public func requestData(url: String) {
-        var jsonArray: Array<Dictionary<String, Any>> = []
+        var jsonArray: Array<Album> = []
         Alamofire.request(url).responseJSON { (responseObject) -> Void in
             jsonArray = self.convertToDictionary(response: responseObject)
             } .responseJSON(completionHandler: { _ in
@@ -44,8 +43,13 @@ class DataManager {
     
     // MARK: - Private Methods
     
-    private func convertToDictionary(response: DataResponse<Any>) -> Array<Dictionary<String, Any>> {
-        return response.result.value as! Array<Dictionary<String, Any>>
+    private func convertToDictionary(response: DataResponse<Any>) -> Array<Album> {
+        let array = response.result.value as! Array<Dictionary<String, Any>>
+        var result: Array<Album> = []
+        for item in array {
+            result.append(Album(album: item))
+        }
+        return result
     }
     
 }

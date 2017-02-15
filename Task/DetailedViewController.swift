@@ -12,7 +12,7 @@ class DetailedViewController: UIViewController {
     
     // MARK: - Properties
     
-    public var data: Dictionary<String, Any> = [:]
+    public var data: Album = Album(album: [:])
     
     private var removeButton = UIButton()
     private var titleLabel = UILabel()
@@ -22,7 +22,7 @@ class DetailedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.green
+        self.view.backgroundColor = UIColor.white
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,16 +36,3 @@ class DetailedViewController: UIViewController {
     
 }
 
-class Json {
-    
-    
-    
-}
-
-/*
- "albumId": 1,
- "id": 2,
- "title": "reprehenderit est deserunt velit ipsam",
- "url": "http://placehold.it/600/771796",
- "thumbnailUrl": "http://placehold.it/150/dff9f6"
- */

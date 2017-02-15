@@ -10,20 +10,18 @@ import UIKit
 
 class TableViewCell: UITableViewCell {
     
-    var iView: UIImageView = UIImageView()
-    var title: String = ""
+    var album: Album
     
-    init(image: UIImage, title: String) {
-        self.title = title
-        self.iView = UIImageView(image: image)
+    init(album: Album) {
+        self.album = album
         super.init(style: .default, reuseIdentifier: cellReuseIdentifier)
         // update view
-        
-        self.textLabel?.text = title
+        self.textLabel?.text = album.title
+        self.imageView?.imageFromUrl(url: album.thumbnailUrl)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("No support for NSCoding")
     }
-    
 }
+
