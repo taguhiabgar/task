@@ -18,6 +18,11 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.barStyle = .default
     }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setupTableView()
+    }
 }
 
 extension ViewController: DataManagerDelegate {
@@ -34,14 +39,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "Albums"
         DataManager.shared.delegate = self
-        setupTableView()
     }
     
     fileprivate func setupTableView() {
-        tableView.frame = self.view.frame
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.frame = self.view.frame
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         self.view.addSubview(tableView)
     }
@@ -53,9 +58,12 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
         let album = DataManager.shared.data[indexPath.row]
-        return TableViewCell(album: album)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
+        cell.textLabel?.text = album.title
+        cell.imageView?.image = placeholderImage
+        cell.imageView?.imageFromUrl(url: album.thumbnailUrl)
+        return cell
     }
     
     // MARK: - Table View Delegate

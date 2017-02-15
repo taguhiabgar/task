@@ -8,6 +8,6 @@
 
 import Foundation
 
-let urlString = "https://jsonplaceholder.typicode.com/photos?albumId[]=95&albumId[]=1"
+let defaultLink = "https://jsonplaceholder.typicode.com/photos?albumId[]=95&albumId[]=1"
 
 let cellReuseIdentifier = "cell"

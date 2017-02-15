@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        DataManager.shared.requestData(url: urlString)
+        DataManager.shared.requestData(url: defaultLink)
         let viewController = ViewController(nibName: nil, bundle: nil)
         let navigationController = UINavigationController(rootViewController: viewController)
         self.window = UIWindow(frame: UIScreen.main.bounds)
