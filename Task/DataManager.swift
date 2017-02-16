@@ -42,11 +42,21 @@ class DataManager {
     }
     
     public func remove(item: Album) {
-        
-        
-        
-        
-        print("not implemented: remove(item: Album)")
+        // find item and save in UserDefaults
+        for element in data {
+            if element.albumId == item.albumId && element.id == item.id {
+                let key = keyForAlbum(album: item)
+                if var array = UserDefaults.standard.value(forKey: key) as? [Int] {
+                    array.append(item.id)
+                    UserDefaults.standard.set(array, forKey: key)
+                } else {
+                    let array: [Int] = [item.id]
+                    UserDefaults.standard.set(array, forKey: key)
+                }
+                validateData()
+                break
+            }
+        }
     }
     
     // MARK: - Private Methods
@@ -60,9 +70,28 @@ class DataManager {
         return result
     }
     
+    private func keyForAlbum(album: Album) -> String {
+        return "AlbumID: \(album.albumId)"
+    }
+    
     private func validateData() {
-        
-        print("I'm not implemented :P")
+        var thereAreRemovedItems = false
+        var index = 0
+        while index < data.count {
+            let idArray = UserDefaults.standard.value(forKey: keyForAlbum(album: data[index])) as? [Int]
+            if idArray != nil {
+                for id in idArray! {
+                    if id == data[index].id {
+                        data.remove(at: index)
+                        thereAreRemovedItems = true
+                    }
+                }
+            }
+            index += 1
+        }
+        if thereAreRemovedItems {
+            self.delegate?.updateData()
+        }
     }
     
 }

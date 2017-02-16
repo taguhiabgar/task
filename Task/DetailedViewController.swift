@@ -63,7 +63,7 @@ class DetailedViewController: UIViewController {
     }
     
     @objc private func removeButtonAction(sender: UIBarButtonItem) {
-        print("i didn't remove your item :P")
+        DataManager.shared.remove(item: data)
         self.navigationController?.popViewController(animated: true)
     }
 }
