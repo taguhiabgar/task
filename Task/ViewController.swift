@@ -62,7 +62,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
         cell.textLabel?.text = album.title
         cell.imageView?.image = placeholderImage
-        cell.imageView?.imageFromUrl(url: album.thumbnailUrl)
+        cell.imageView?.imageFromUrl(url: album.url)
         return cell
     }
     

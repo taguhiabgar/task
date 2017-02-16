@@ -21,7 +21,11 @@ class DataManager {
     
     // MARK: - Public Properties
     
-    public var data: Array<Album> = []
+    public var data: Array<Album> = [] {
+        didSet {
+            validateData()
+        }
+    }
     public var delegate: DataManagerDelegate? = nil
     
     // MARK: - Public Methods
@@ -37,8 +41,12 @@ class DataManager {
         )
     }
     
-    public func remove(index: Int) {
-        print("not implemented: remove(index: Int)")
+    public func remove(item: Album) {
+        
+        
+        
+        
+        print("not implemented: remove(item: Album)")
     }
     
     // MARK: - Private Methods
@@ -50,6 +58,11 @@ class DataManager {
             result.append(Album(album: item))
         }
         return result
+    }
+    
+    private func validateData() {
+        
+        print("I'm not implemented :P")
     }
     
 }
